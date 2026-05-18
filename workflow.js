@@ -1,4 +1,5 @@
 import fs from "fs-extra";
+import { fileURLToPath } from "url";
 import { setProperty as dotPropSet } from "dot-prop";
 import { CONFIG, WORKFLOW_PATHS } from "./config.js";
 
@@ -41,8 +42,8 @@ export function applyWorkflowOverrides(workflowData, overrides = {}) {
  * Load and process workflow with overrides
  */
 export async function prepareWorkflow(overrides = {}) {
-  const workflowPath = new URL(CONFIG.WORKFLOW_FILE, import.meta.url);
-  let workflowData = await loadWorkflow(workflowPath.pathname);
+  const workflowPath = fileURLToPath(new URL(CONFIG.WORKFLOW_FILE, import.meta.url));
+  let workflowData = await loadWorkflow(workflowPath);
   workflowData = applyWorkflowOverrides(workflowData, overrides);
   return workflowData;
 }

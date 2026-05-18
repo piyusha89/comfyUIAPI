@@ -4,11 +4,12 @@ export const CONFIG = {
   CONNECT_TIMEOUT_MS: 60000,
   POLLING_INTERVAL_MS: 1000,
   WORKFLOW_FILE: "./image_z_image_turbo.json",
+  OUTPUT_DIR: "./output",
 };
 
 // Default workflow parameter overrides
 export const DEFAULT_OVERRIDES = {
-  text: "Child deeply focused painting with fingers, concentration visible",
+  text: "Parent looking frustrated at mess, then seeing child's happy face",
   width: 1088,
   height: 1360,
   batch_size: 1,
