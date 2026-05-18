@@ -1,0 +1,20 @@
+{
+  "name": "imagegen",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@stable-canvas/comfyui-client": "^1.5.9",
+    "dot-prop": "^10.1.0",
+    "fs-extra": "^11.3.5",
+    "node-fetch": "^3.3.2",
+    "ws": "^8.20.1"
+  }
+}
