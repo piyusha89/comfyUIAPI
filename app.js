@@ -1,4 +1,4 @@
-import { client, connectClient } from "./client.js";
+import { client, connectClient, disconnectClient } from "./client.js";
 import { prepareWorkflow } from "./workflow.js";
 import { setupEventListeners } from "./events.js";
 import { CONFIG, DEFAULT_OVERRIDES } from "./config.js";
@@ -61,6 +61,8 @@ async function runWorkflows(promptOverrides) {
 async function main() {
   console.log("🚀 ImageGen - ComfyUI Workflow Executor\n");
 
+  let exitCode = 0;
+
   try {
     let promptOverrides = [DEFAULT_OVERRIDES];
 
@@ -75,7 +77,11 @@ async function main() {
     await runWorkflows(promptOverrides);
   } catch (error) {
     console.error("❌ Error:", error.message);
-    process.exit(1);
+    exitCode = 1;
+  } finally {
+    await disconnectClient();
+    console.log("🛑 All prompts completed or aborted, stopping the server.");
+    process.exit(exitCode);
   }
 }
 

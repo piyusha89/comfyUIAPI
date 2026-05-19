@@ -30,3 +30,22 @@ export async function connectClient() {
     console.log("✅ Connected via HTTP polling");
   }
 }
+
+export async function disconnectClient() {
+  try {
+    if (client.socket) {
+      client.closed = true;
+      client.socket.close();
+      client.socket = null;
+      console.log("🔌 WebSocket disconnected");
+    }
+
+    if (client._polling_timer) {
+      clearInterval(client._polling_timer);
+      client._polling_timer = null;
+      console.log("🔌 Polling stopped");
+    }
+  } catch (error) {
+    console.warn("⚠️  Error while disconnecting client:", error.message);
+  }
+}
