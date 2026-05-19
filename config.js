@@ -5,6 +5,8 @@ export const CONFIG = {
   POLLING_INTERVAL_MS: 1000,
   WORKFLOW_FILE: "./image_z_image_turbo.json",
   OUTPUT_DIR: "./output",
+  INPUT_FILE: "./prompts.csv",
+  INPUT_SHEET_NAME: undefined,
 };
 
 // Default workflow parameter overrides

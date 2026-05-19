@@ -71,7 +71,7 @@ async function getImageBuffer(image) {
   throw new Error("Unsupported image payload type");
 }
 
-export async function saveGeneratedImages(images, outputDir) {
+export async function saveGeneratedImages(images, outputDir, outputName) {
   if (!images || images.length === 0) {
     console.log("⚠️  No generated images found to save.");
     return;
@@ -83,7 +83,8 @@ export async function saveGeneratedImages(images, outputDir) {
   for (let index = 0; index < images.length; index += 1) {
     const image = images[index];
     const extension = getImageExtension(image);
-    const filename = `generated-${timestamp}-${index + 1}.${extension}`;
+    const filenameBase = outputName ? outputName : `generated-${timestamp}`;
+    const filename = `${filenameBase}${images.length > 1 ? `-${index + 1}` : ""}.${extension}`;
     const filePath = path.join(outputDir, filename);
     const buffer = await getImageBuffer(image);
 
