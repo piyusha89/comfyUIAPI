@@ -4,6 +4,7 @@ import { setupEventListeners } from "./events.js";
 import { CONFIG, DEFAULT_OVERRIDES } from "./config.js";
 import { getOutputDir, saveGeneratedImages } from "./output.js";
 import { loadPromptData } from "./data.js";
+import fs from "fs-extra";
 
 /**
  * Execute multiple workflows with ComfyUI
@@ -17,6 +18,30 @@ async function runWorkflows(promptOverrides) {
 
   for (const [index, overrides] of promptOverrides.entries()) {
     console.log(`\n🔁 Prompt ${index + 1}/${promptOverrides.length}: ${overrides.text}`);
+
+    // If the prompt specifies a post number and a file with that base name
+    // already exists in the output directory, skip this prompt to continue
+    // from the next one.
+    if (overrides.postNumber) {
+      try {
+        const files = await fs.readdir(outputDir);
+        const exists = files.some((f) => {
+          return (
+            f.startsWith(`${overrides.postNumber}.`) || // e.g. "15.png"
+            f.startsWith(`${overrides.postNumber}-`) || // e.g. "15-1.png"
+            f === String(overrides.postNumber)
+          );
+        });
+
+        if (exists) {
+          console.log(`⏭️  Skipping Post ${overrides.postNumber}: output already exists.`);
+          continue;
+        }
+      } catch (err) {
+        console.warn(`⚠️  Could not read output directory: ${err.message}`);
+      }
+    }
+
     const workflowData = await prepareWorkflow(overrides);
 
     const promptResponse = await client.enqueue(workflowData);
